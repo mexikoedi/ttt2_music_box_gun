@@ -8,7 +8,7 @@ Only newest Version of GitHub/Workshop.
 
 If you should find a vulnerability in this project, please report it like this: 
 
-1. Your Verison (GitHub or Workshop)
+1. Your Version (GitHub or Workshop)
 2. If this has an impact give your OS Name with exact Version (Yes = Windows xxx/Linux xxx/...) (No = skip to point 3) 
 3. If this has an impact give your Garry's Mod version with the version of TTT2 (Yes = Garry's Mod xxx and TTT2 xxx) (No = skip to point 4)
 4. Describe the vulnerability in detail
