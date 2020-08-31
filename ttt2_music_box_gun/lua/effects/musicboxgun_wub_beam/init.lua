@@ -1,3 +1,4 @@
+if engine.ActiveGamemode( ) != "terrortown" then return end
 EFFECT.Mat = Material( "trails/laser" ) //Material( "effects/beam001_blu_dx80" ) effects/laser_tracer
 EFFECT.Mat2 = Material( "trails/plasma" ) //Material( "effects/beam001_blu" )
 
