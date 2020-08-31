@@ -1,3 +1,4 @@
+if engine.ActiveGamemode( ) != "terrortown" then return end
 local matBulge2 = Material( "effects/mbg/refract_ring" ) //effects/mbg/
 local matBulge = Material( "Effects/freeze_unfreeze" )
 local matBulge3 = Material( "particle/warp_ripple" )
