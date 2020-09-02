@@ -25,7 +25,6 @@ if ( SERVER ) then
     end
 end
 
-//- TTT STUFF ---
 SWEP.EquipMenuData = {
     type = "item_weapon" ,
     name = "ttt2_music_box_gun_name" ,
@@ -38,7 +37,6 @@ SWEP.CanBuy = { ROLE_DETECTIVE }
 
 SWEP.LimitedStock = true
 SWEP.Icon = "icon/weapon_music_box_gun"
-//- END TTT STUFF ---
 SWEP.Base = "weapon_tttbase"
 SWEP.PrintName = "Music Box Gun"
 SWEP.AutoSpawnable = false
@@ -65,7 +63,6 @@ SWEP.Secondary.Delay = 0.5
 SWEP.Secondary.DefaultClip = 1
 SWEP.Secondary.Automatic = false
 SWEP.Secondary.Ammo = "none"
-//- Fix position stuff ---
 SWEP.Pos = nil
 SWEP.Ang = nil
 
@@ -82,7 +79,6 @@ SWEP.Offset = {
     }
 }
 
-//- End of fix position stuff ---
 function SWEP:Initialize( )
     if CLIENT then
         self:AddHUDHelp( "ttt2_music_box_gun_help1" , "ttt2_music_box_gun_help2" , true )
@@ -104,13 +100,11 @@ end
 function SWEP:PrimaryAttack( )
     if ( !self:CanPrimaryAttack( ) ) then return end
 
-    if SERVER then
-        if !self.LoopSound then
-            self.LoopSound = CreateSound( self:GetOwner( ) , Sound( song_path .. songs[ math.random( #songs ) ] ) )
+    if SERVER && !self.LoopSound then
+        self.LoopSound = CreateSound( self:GetOwner( ) , Sound( song_path .. songs[ math.random( #songs ) ] ) )
 
-            if ( self.LoopSound ) then
-                self.LoopSound:Play( )
-            end
+        if ( self.LoopSound ) then
+            self.LoopSound:Play( )
         end
     end
 
@@ -118,7 +112,6 @@ function SWEP:PrimaryAttack( )
         self.BeatSound:ChangeVolume( 0 , 0.1 )
     end
 
-    //- Wub effect ---
     if self.PreventEffectSpam == true then return end
     self.PreventEffectSpam = true
     self.AllowBounce = true
@@ -131,11 +124,11 @@ function SWEP:PrimaryAttack( )
         self.AllowBounce = false
     end )
 
-    //if IsValid( Ply ) then
     local tr = self:GetOwner( ):GetEyeTrace( )
     local effectdata = EffectData( )
     effectdata:SetOrigin( tr.HitPos )
     util.Effect( "musicboxgun_wub_effect" , effectdata , true , true )
+    util.Effect( "musicboxgun_treb_effect" , effectdata , true , true )
     effectdata:SetOrigin( tr.HitPos )
     effectdata:SetStart( self:GetOwner( ):GetShootPos( ) )
     effectdata:SetScale( 5 )
@@ -143,10 +136,6 @@ function SWEP:PrimaryAttack( )
     effectdata:SetEntity( self )
     util.Effect( "musicboxgun_wub_beam" , effectdata , true , true )
     util.BlastDamage( self , self:GetOwner( ) , tr.HitPos , 175 , 10 )
-    //end
-    //- End of Wub effect ---
-    //self:SendWeaponAnim( ACT_VM_PRIMARYATTACK )
-    //self.Owner:SetAnimation( PLAYER_ATTACK1 )
     self:SetNextPrimaryFire( CurTime( ) + self.Primary.Delay )
     self:SetNextSecondaryFire( CurTime( ) + self.Primary.Delay )
 end
@@ -203,14 +192,6 @@ function SWEP:CalcAbsolutePosition( pos , ang )
     return
 end
 
-/*if ( !self.IronSightsPos ) then return end
-  if ( self.NextSecondaryAttack > CurTime() ) then return end
-
-  bIronsights = !self.Weapon:GetNetworkedBool( "Ironsights", false )
-
-  self:SetIronsights( bIronsights )
-
-  self.NextSecondaryAttack = CurTime() + 0.3*/
 function SWEP:Think( )
     ironSightStatus = self:GetNWBool( "Ironsights" , false )
 
@@ -219,11 +200,6 @@ function SWEP:Think( )
         self:SetNWBool( "Ironsights" , true )
     end
 
-    /*if !ironSightStatus then
-    Msg("Ironsight status is false, setting into ironsight")
-    self:SetIronsights( bIronsights )
-    ironSightStatus = true
-  end*/
     if ( self:GetOwner( ):IsPlayer( ) && ( self:GetOwner( ):KeyReleased( IN_ATTACK ) || !self:GetOwner( ):KeyDown( IN_ATTACK ) ) ) then
         if ( self.BeatSound ) then
             self.BeatSound:ChangeVolume( 1 , 0.1 )
@@ -269,8 +245,6 @@ function SWEP:DrawWorldModel( )
     hand = self:GetOwner( ):GetAttachment( self.Hand )
 
     if !hand then
-        //self:SetRenderOrigin(self:GetNetworkOrigin())
-        //self:SetRenderAngles(self:GetNetworkAngles())
         self:SetRenderOrigin( self.Pos )
         self:SetRenderAngles( self.Ang )
         self:DrawModel( )
@@ -313,10 +287,6 @@ end
 
 local IRONSIGHT_TIME = 0.25
 
-/*---------------------------------------------------------
-   Name: GetViewModelPosition
-   Desc: Allows you to re-position the view model
----------------------------------------------------------*/
 function SWEP:GetViewModelPosition( pos , ang )
     if ( !self.IronSightsPos ) then return pos , ang end
     local bIron = self:GetNWBool( "Ironsights" )
