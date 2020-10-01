@@ -1,5 +1,5 @@
 if engine.ActiveGamemode( ) != "terrortown" then return end
-local matBulge2 = Material( "effects/mbg/refract_ring" ) //effects/mbg/
+local matBulge2 = Material( "effects/mbg/refract_ring" )
 local matBulge = Material( "Effects/freeze_unfreeze" )
 local matBulge3 = Material( "particle/warp_ripple" )
 local lighteffect = CreateClientConVar( "cl_musicboxgun_wub_light" , "0" , true , false )
@@ -13,12 +13,11 @@ function EFFECT:Init( data )
 
     timer.Simple( 0.1 , function( )
         if self.Normal == nil then return end
-        local ang = self.Normal:Angle( ):Right( ):Angle( ) // D :
+        local ang = self.Normal:Angle( ):Right( ):Angle( )
         local emitter = ParticleEmitter( self.Position )
         local size = 270
-        local Low , High = Vector( -size , -size , -size ) , Vector( size , size , size * 2 ) //self:WorldSpaceAABB()
+        local Low , High = Vector( -size , -size , -size ) , Vector( size , size , size * 2 )
 
-        //don't fuck with this or you FPS dies
         for i = 1 , 25 do
             local vPos = self.Position + Vector( math.random( Low.x , High.x ) , math.random( Low.y , High.y ) , math.random( Low.z , High.z ) )
             local particle = emitter:Add( "/effects/laser_tracer" , vPos + Vector( 0 , 0 , 15 ) )
@@ -34,7 +33,7 @@ function EFFECT:Init( data )
                 particle:SetStartLength( 90 )
                 particle:SetEndSize( 5 )
                 particle:SetEndLength( 200 )
-                particle:SetRoll( 0 ) //math.random(0, 360)
+                particle:SetRoll( 0 )
                 particle:SetRollDelta( 0 )
                 particle:SetAirResistance( 90 )
                 particle:SetGravity( Vector( 0 , 0 , -450 ) )
@@ -54,7 +53,7 @@ function EFFECT:Init( data )
                 particles:SetStartLength( 90 )
                 particles:SetEndSize( 5 )
                 particles:SetEndLength( 200 )
-                particles:SetRoll( 0 ) //math.random(0, 360)
+                particles:SetRoll( 0 )
                 particles:SetRollDelta( 0 )
                 particles:SetAirResistance( 90 )
                 particles:SetGravity( Vector( 0 , 0 , -450 ) )
@@ -74,7 +73,7 @@ function EFFECT:Init( data )
                 particle2:SetStartLength( 100 )
                 particle2:SetEndSize( 5 )
                 particle2:SetEndLength( 200 )
-                particle2:SetRoll( 0 ) //math.random(0, 360)
+                particle2:SetRoll( 0 )
                 particle2:SetRollDelta( 0 )
                 particle2:SetAirResistance( 100 )
                 particle2:SetGravity( Vector( 0 , 0 , -500 ) )
@@ -94,7 +93,7 @@ function EFFECT:Init( data )
                 particle3:SetStartLength( 80 )
                 particle3:SetEndSize( 5 )
                 particle3:SetEndLength( 150 )
-                particle3:SetRoll( 0 ) //math.random(0, 360)
+                particle3:SetRoll( 0 )
                 particle3:SetRollDelta( 0 )
                 particle3:SetAirResistance( 80 )
                 particle3:SetGravity( Vector( 0 , 0 , -500 ) )
@@ -105,14 +104,14 @@ function EFFECT:Init( data )
         emitter:Finish( )
 
         if lighteffect:GetInt( ) == 1 then
-            local dlight = DynamicLight( math.random( 2048 , 4096 ) ) //This works for some reason.  Don't ask.
+            local dlight = DynamicLight( math.random( 2048 , 4096 ) )
             dlight.Pos = self.Position
             dlight.Size = 5000
             dlight.DieTime = CurTime( ) + 0.2
             dlight.r = 70 * math.sin( RealTime( ) * 3 ) + 180
             dlight.g = 120 * math.sin( RealTime( ) / 3 ) + 180
             dlight.b = 50 * math.cos( RealTime( ) + 3 ) + 180
-            dlight.Brightness = 1 //1
+            dlight.Brightness = 1
             dlight.Decay = 1000
         end
     end )
@@ -139,6 +138,10 @@ function EFFECT:Render( )
     self:SetRenderBoundsWS( self.Position + Vector( ) * size , self.Position - Vector( ) * size )
     matBulge2:SetFloat( "$refractamount" , math.sin( 0.5 * invintrplt * math.pi ) * 0.16 )
     render.SetMaterial( matBulge2 )
+    render.UpdateRefractTexture( )
+    render.DrawSprite( self.Position , size , size , Color( 255 , 255 , 255 , 150 * invintrplt ) )
+    matBulge3:SetFloat( "$refractamount" , math.sin( 0.5 * invintrplt * math.pi ) * 0.16 )
+    render.SetMaterial( matBulge3 )
     render.UpdateRefractTexture( )
     render.DrawSprite( self.Position , size , size , Color( 255 , 255 , 255 , 150 * invintrplt ) )
 end
