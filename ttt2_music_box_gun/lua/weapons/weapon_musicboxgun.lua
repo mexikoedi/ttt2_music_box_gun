@@ -228,7 +228,7 @@ function SWEP:OnDrop( )
 end
 
 function SWEP:DrawWorldModel( )
-    local hand , offset , rotate
+    local hand , offset
 
     if !IsValid( self:GetOwner( ) ) then
         self:SetRenderOrigin( self.Pos )
