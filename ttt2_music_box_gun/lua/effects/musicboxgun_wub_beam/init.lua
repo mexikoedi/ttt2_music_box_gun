@@ -40,7 +40,7 @@ end
 
 function EFFECT:Render( )
     if !IsValid( self.WeaponEnt ) then return end
-    if ( self.Alpha < 1 ) then return end
+    if ( self.Alpha == nil ) then return end
     local col = Color( 70 * math.sin( RealTime( ) * 3 ) + 180 , 120 * math.sin( RealTime( ) / 3 ) + 180 , 50 * math.cos( RealTime( ) + 3 ) + 180 )
     self.Length = ( self.StartPos - self.EndPos ):Length( )
     local texcoord = math.Rand( 0 , 1 )
