@@ -13,7 +13,6 @@ function EFFECT:Init( data )
 
     timer.Simple( 0.1 , function( )
         if self.Normal == nil then return end
-        local ang = self.Normal:Angle( ):Right( ):Angle( )
         local emitter = ParticleEmitter( self.Position )
         local size = 270
         local Low , High = Vector( -size , -size , -size ) , Vector( size , size , size * 2 )
@@ -132,9 +131,9 @@ function EFFECT:Render( )
     render.SetMaterial( matBulge )
     render.UpdateRefractTexture( )
     render.DrawSprite( self.Position , size , size , Color( 70 * math.sin( RealTime( ) * 3 ) + 180 , 120 * math.sin( RealTime( ) / 3 ) + 180 , 50 * math.cos( RealTime( ) + 3 ) + 180 , 150 * invintrplt ) )
-    local invintrplt = ( self.KillTime - CurTime( ) ) / 0.65
-    local intrplt = 1 - invintrplt
-    local size = 200 + 50 * intrplt * 10
+    invintrplt = ( self.KillTime - CurTime( ) ) / 0.65
+    intrplt = 1 - invintrplt
+    size = 200 + 50 * intrplt * 10
     self:SetRenderBoundsWS( self.Position + Vector( ) * size , self.Position - Vector( ) * size )
     matBulge2:SetFloat( "$refractamount" , math.sin( 0.5 * invintrplt * math.pi ) * 0.16 )
     render.SetMaterial( matBulge2 )
