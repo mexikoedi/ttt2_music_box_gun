@@ -9,7 +9,6 @@ function EFFECT:Init( data )
     self.KillTime = CurTime( ) + 0.65
     self:SetRenderBoundsWS( self.Position + Vector( ) * 280 , self.Position - Vector( ) * 280 )
     if self.Normal == nil then return end
-    local ang = self.Normal:Angle( ):Right( ):Angle( )
     local emitter = ParticleEmitter( self.Position )
 
     for i = 1 , 30 do
@@ -30,13 +29,6 @@ function EFFECT:Init( data )
         particle:SetBounce( 0.9 )
     end
 
-    local size = 50
-    local Low , High = Vector( -size , -size , -size ) , Vector( size , size , size * 2 )
-
-    for i = 1 , 0 do
-        local vPos = self.Position + Vector( math.random( Low.x , High.x ) , math.random( Low.y , High.y ) , math.random( Low.z , High.z ) )
-    end
-
     emitter:Finish( )
 end
 
@@ -48,6 +40,7 @@ function EFFECT:Think( )
 end
 
 function EFFECT:Render( )
+    if self.KillTime == nil then return end
     local invintrplt = ( self.KillTime - CurTime( ) ) / 0.15
     local intrplt = 1 - invintrplt
     local size = 15 + 15 * intrplt
