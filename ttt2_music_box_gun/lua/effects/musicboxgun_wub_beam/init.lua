@@ -1,48 +1,59 @@
 if engine.ActiveGamemode() ~= "terrortown" then return end
+EFFECT.Mat = Material("trails/laser")
+EFFECT.Mat2 = Material("trails/plasma")
 
 function EFFECT:Init(data)
-    self.Position = data:GetOrigin()
-    self.WeaponEntity = data:GetEntity()
-    if not IsValid(self.WeaponEntity) then return end
-    self.Direction = (self.WeaponEntity:GetPos() - self.Position):Angle()
-    self.Normal = data:GetNormal()
-    self.KillTime = CurTime() + 0.65
-    self:SetRenderBoundsWS(self.Position + Vector() * 280, self.Position - Vector() * 280)
-    if self.Normal == nil then return end
-    local emitter = ParticleEmitter(self.Position)
-
-    for i = 1, 30 do
-        local vec = (self.Normal + 5 * VectorRand()):GetNormalized()
-        local particle = emitter:Add("sprites/glow04_noz", self.Position + math.Rand(3, 30) * vec)
-        particle:SetVelocity(math.Rand(70, 70) * vec)
-        particle:SetDieTime(1)
-        particle:SetStartAlpha(0)
-        particle:SetEndAlpha(255)
-        particle:SetStartSize(5)
-        particle:SetEndSize(0)
-        particle:SetStartLength(5)
-        particle:SetEndLength(0)
-        particle:SetColor(70 * math.sin(RealTime() * 3) + 180, 120 * math.sin(RealTime() / 3) + 180, 50 * math.cos(RealTime() + 3) + 180)
-        particle:SetGravity(Vector(0, 0, 0))
-        particle:SetAirResistance(5)
-        particle:SetCollide(true)
-        particle:SetBounce(0.9)
-    end
-
-    emitter:Finish()
+    self.Position = data:GetStart()
+    self.WeaponEnt = data:GetEntity()
+    if not IsValid(self.WeaponEnt) then return end
+    if not IsValid(self.WeaponEnt:GetOwner()) then return end
+    self.WeaponEntO = self.WeaponEnt:GetOwner()
+    self.Attachment = data:GetAttachment()
+    self.StartPos = self:GetTracerShootPos(self.Position, self.WeaponEnt, self.Attachment)
+    self.StartPosTemp = self.StartPos
+    self.EndPos = data:GetOrigin()
+    self.Alpha = 255
 end
 
 function EFFECT:Think()
-    if not IsValid(self.WeaponEntity) then return false end
-    if CurTime() > self.KillTime then return false end
+    if not IsValid(self.WeaponEnt) then return end
+    if not IsValid(self.WeaponEnt:GetOwner()) then return end
+
+    if self.Alpha then
+        self.Alpha = self.Alpha - FrameTime() * 548
+    end
+
+    if self.StartPos == nil then
+        self.StartPos = Vector()
+    end
+
+    if self.EndPos == nil then
+        self.EndPos = Vector()
+    end
+
+    if self.Alpha == nil then return false end
+    self:SetRenderBoundsWS(self.StartPos, self.EndPos)
+    if (self.Alpha < 0) then return false end
 
     return true
 end
 
 function EFFECT:Render()
-    if self.KillTime == nil then return end
-    local invintrplt = (self.KillTime - CurTime()) / 0.15
-    local intrplt = 1 - invintrplt
-    local size = 15 + 15 * intrplt
-    self:SetRenderBoundsWS(self.Position + Vector() * size, self.Position - Vector() * size)
+    if not IsValid(self.WeaponEnt) then return end
+    if (self.Alpha == nil) then return end
+    local col = Color(70 * math.sin(RealTime() * 3) + 180, 120 * math.sin(RealTime() / 3) + 180, 50 * math.cos(RealTime() + 3) + 180)
+    self.Length = (self.StartPos - self.EndPos):Length()
+    local texcoord = math.Rand(0, 1)
+    local width = 15
+    render.SetMaterial(self.Mat2)
+
+    for i = 1, 6 do
+        render.DrawBeam(self.StartPos, self.EndPos, width / 2, texcoord, texcoord + self.Length / 128, Color(col.r, col.g, col.b, self.Alpha))
+    end
+
+    render.SetMaterial(self.Mat)
+
+    for i = 1, 6 do
+        render.DrawBeam(self.StartPos, self.EndPos, width, texcoord, texcoord + self.Length / 128, Color(col.r, col.g, col.b, self.Alpha))
+    end
 end
