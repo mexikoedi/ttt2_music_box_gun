@@ -1,39 +1,39 @@
-if engine.ActiveGamemode( ) != "terrortown" then return end
-local songs = { }
+if engine.ActiveGamemode() ~= "terrortown" then return end
+local songs = {}
 local song_path = "weapons/musicboxgun/songs/"
 
-if ( SERVER ) then
-    AddCSLuaFile( )
-    resource.AddFile( "materials/effects/mbg/refract_ring.vmt" )
-    resource.AddFile( "materials/icon/weapon_music_box_gun.vmt" )
-    resource.AddFile( "models/mark2580/sr4/dubstepgun.dx80.vtx" )
-    resource.AddFile( "models/mark2580/sr4/dubstepgun.dex90.vtx" )
-    resource.AddFile( "models/mark2580/sr4/dubstepgun.mdl" )
-    resource.AddFile( "models/mark2580/sr4/dubstepgun.phy" )
-    resource.AddFile( "models/mark2580/sr4/dubstepgun.sw.vtx" )
-    resource.AddFile( "models/mark2580/sr4/dubstepgun.vvd" )
-    resource.AddFile( "materials/models/mark2580/sr4/dubstepgun_lg_d.vmt" )
-    resource.AddFile( "meme.mp3" )
-    local song_files = file.Find( "sound/" .. song_path .. "*.wav" , "GAME" )
+if (SERVER) then
+    AddCSLuaFile()
+    resource.AddFile("materials/effects/mbg/refract_ring.vmt")
+    resource.AddFile("materials/icon/weapon_music_box_gun.vmt")
+    resource.AddFile("models/mark2580/sr4/dubstepgun.dx80.vtx")
+    resource.AddFile("models/mark2580/sr4/dubstepgun.dex90.vtx")
+    resource.AddFile("models/mark2580/sr4/dubstepgun.mdl")
+    resource.AddFile("models/mark2580/sr4/dubstepgun.phy")
+    resource.AddFile("models/mark2580/sr4/dubstepgun.sw.vtx")
+    resource.AddFile("models/mark2580/sr4/dubstepgun.vvd")
+    resource.AddFile("materials/models/mark2580/sr4/dubstepgun_lg_d.vmt")
+    resource.AddFile("meme.mp3")
+    local song_files = file.Find("sound/" .. song_path .. "*.wav", "GAME")
 
     if song_files then
-        for i = 1 , #song_files do
-            local song = song_files[ i ]
-            resource.AddFile( "sound/" .. song_path .. song_files[ i ] )
-            songs[ i ] = song
+        for i = 1, #song_files do
+            local song = song_files[i]
+            resource.AddFile("sound/" .. song_path .. song_files[i])
+            songs[i] = song
         end
     end
 end
 
 SWEP.EquipMenuData = {
-    type = "item_weapon" ,
-    name = "ttt2_music_box_gun_name" ,
+    type = "item_weapon",
+    name = "ttt2_music_box_gun_name",
     desc = "ttt2_music_box_gun_desc"
 }
 
 SWEP.Kind = WEAPON_EQUIP1
 
-SWEP.CanBuy = { ROLE_DETECTIVE }
+SWEP.CanBuy = {ROLE_DETECTIVE}
 
 SWEP.LimitedStock = true
 SWEP.Icon = "icon/weapon_music_box_gun"
@@ -47,8 +47,8 @@ SWEP.ShowViewModel = true
 SWEP.HoldType = "rpg"
 SWEP.ViewModelFOV = 90
 SWEP.UseHands = true
-SWEP.IronSightsPos = Vector( 10.6 , 0 , -12.12 )
-SWEP.IronSightsAng = Vector( 0 , 0 , 0 )
+SWEP.IronSightsPos = Vector(10.6, 0, -12.12)
+SWEP.IronSightsAng = Vector(0, 0, 0)
 SWEP.PreventEffectSpam = false
 SWEP.AllowBounce = false
 SWEP.SkinType = 1
@@ -68,218 +68,218 @@ SWEP.Ang = nil
 
 SWEP.Offset = {
     Pos = {
-        Up = 0 ,
-        Right = 4.5 ,
-        Forward = 3 ,
-    } ,
+        Up = 0,
+        Right = 4.5,
+        Forward = 3,
+    },
     Ang = {
-        Up = 0 ,
-        Right = 0 ,
-        Forward = 0 ,
+        Up = 0,
+        Right = 0,
+        Forward = 0,
     }
 }
 
-function SWEP:Initialize( )
+function SWEP:Initialize()
     if CLIENT then
-        self:AddHUDHelp( "ttt2_music_box_gun_help1" , "ttt2_music_box_gun_help2" , true )
+        self:AddHUDHelp("ttt2_music_box_gun_help1", "ttt2_music_box_gun_help2", true)
     end
 
-    self:SetWeaponHoldType( self.HoldType )
+    self:SetWeaponHoldType(self.HoldType)
 
     if SERVER then
-        self:SetWeaponHoldType( self.HoldType )
+        self:SetWeaponHoldType(self.HoldType)
     end
 
     if CLIENT then
-        self:SetWeaponHoldType( self.HoldType )
+        self:SetWeaponHoldType(self.HoldType)
     end
 
     return true
 end
 
-function SWEP:PrimaryAttack( )
-    if ( !self:CanPrimaryAttack( ) ) then return end
+function SWEP:PrimaryAttack()
+    if (not self:CanPrimaryAttack()) then return end
 
-    if SERVER && !self.LoopSound then
-        self.LoopSound = CreateSound( self:GetOwner( ) , Sound( song_path .. songs[ math.random( #songs ) ] ) )
+    if SERVER and not self.LoopSound then
+        self.LoopSound = CreateSound(self:GetOwner(), Sound(song_path .. songs[math.random(#songs)]))
 
-        if ( self.LoopSound ) then
-            self.LoopSound:Play( )
+        if (self.LoopSound) then
+            self.LoopSound:Play()
         end
     end
 
-    if ( self.BeatSound ) then
-        self.BeatSound:ChangeVolume( 0 , 0.1 )
+    if (self.BeatSound) then
+        self.BeatSound:ChangeVolume(0, 0.1)
     end
 
     if self.PreventEffectSpam == true then return end
     self.PreventEffectSpam = true
     self.AllowBounce = true
 
-    timer.Simple( 0.3 , function( )
+    timer.Simple(0.3, function()
         self.PreventEffectSpam = false
-    end )
+    end)
 
-    timer.Simple( 0.45 , function( )
+    timer.Simple(0.45, function()
         self.AllowBounce = false
-    end )
+    end)
 
-    local tr = self:GetOwner( ):GetEyeTrace( )
-    local effectdata = EffectData( )
-    effectdata:SetOrigin( tr.HitPos )
-    util.Effect( "musicboxgun_wub_effect" , effectdata , true , true )
-    util.Effect( "musicboxgun_treb_effect" , effectdata , true , true )
-    effectdata:SetOrigin( tr.HitPos )
-    effectdata:SetStart( self:GetOwner( ):GetShootPos( ) )
-    effectdata:SetScale( 5 )
-    effectdata:SetAttachment( 1 )
-    effectdata:SetEntity( self )
-    util.Effect( "musicboxgun_wub_beam" , effectdata , true , true )
-    util.BlastDamage( self , self:GetOwner( ) , tr.HitPos , 175 , 10 )
-    self:SetNextPrimaryFire( CurTime( ) + self.Primary.Delay )
-    self:SetNextSecondaryFire( CurTime( ) + self.Primary.Delay )
+    local tr = self:GetOwner():GetEyeTrace()
+    local effectdata = EffectData()
+    effectdata:SetOrigin(tr.HitPos)
+    util.Effect("musicboxgun_wub_effect", effectdata, true, true)
+    util.Effect("musicboxgun_treb_effect", effectdata, true, true)
+    effectdata:SetOrigin(tr.HitPos)
+    effectdata:SetStart(self:GetOwner():GetShootPos())
+    effectdata:SetScale(5)
+    effectdata:SetAttachment(1)
+    effectdata:SetEntity(self)
+    util.Effect("musicboxgun_wub_beam", effectdata, true, true)
+    util.BlastDamage(self, self:GetOwner(), tr.HitPos, 175, 10)
+    self:SetNextPrimaryFire(CurTime() + self.Primary.Delay)
+    self:SetNextSecondaryFire(CurTime() + self.Primary.Delay)
 end
 
-function SWEP:SecondaryAttack( )
+function SWEP:SecondaryAttack()
     if SERVER then
-        self.currentOwner = self:GetOwner( )
-        self:GetOwner( ):EmitSound( "meme.mp3" )
+        self.currentOwner = self:GetOwner()
+        self:GetOwner():EmitSound("meme.mp3")
     end
 
-    self:SetNextSecondaryFire( CurTime( ) + 3 )
+    self:SetNextSecondaryFire(CurTime() + 3)
 end
 
-function SWEP:Reload( )
+function SWEP:Reload()
     return false
 end
 
-function SWEP:DoImpactEffect( trace , damageType )
-    local effectdata = EffectData( )
-    effectdata:SetStart( trace.HitPos )
-    effectdata:SetOrigin( trace.HitNormal + Vector( math.Rand( -0.5 , 0.5 ) , math.Rand( -0.5 , 0.5 ) , math.Rand( -0.5 , 0.5 ) ) )
+function SWEP:DoImpactEffect(trace, damageType)
+    local effectdata = EffectData()
+    effectdata:SetStart(trace.HitPos)
+    effectdata:SetOrigin(trace.HitNormal + Vector(math.Rand(-0.5, 0.5), math.Rand(-0.5, 0.5), math.Rand(-0.5, 0.5)))
 
     return true
 end
 
-function SWEP:FireAnimationEvent( pos , ang , event )
+function SWEP:FireAnimationEvent(pos, ang, event)
     return true
 end
 
-function SWEP:KillSounds( )
-    if ( self.BeatSound ) then
-        self.BeatSound:Stop( )
+function SWEP:KillSounds()
+    if (self.BeatSound) then
+        self.BeatSound:Stop()
         self.BeatSound = nil
     end
 
-    if ( self.LoopSound ) then
-        self.LoopSound:Stop( )
+    if (self.LoopSound) then
+        self.LoopSound:Stop()
         self.LoopSound = nil
     end
 end
 
-function SWEP:OnRemove( )
-    self:KillSounds( )
+function SWEP:OnRemove()
+    self:KillSounds()
 
-    if SERVER && IsValid( self.currentOwner ) then
-        self.currentOwner:StopSound( "meme.mp3" )
+    if SERVER and IsValid(self.currentOwner) then
+        self.currentOwner:StopSound("meme.mp3")
     end
 end
 
-function SWEP:CalcAbsolutePosition( pos , ang )
+function SWEP:CalcAbsolutePosition(pos, ang)
     self.Pos = pos
     self.Ang = ang
 
     return
 end
 
-function SWEP:Think( )
-    ironSightStatus = self:GetNWBool( "Ironsights" , false )
+function SWEP:Think()
+    ironSightStatus = self:GetNWBool("Ironsights", false)
 
     if ironSightStatus == false then
-        MsgN( "Ironsights are false, setting to true" )
-        self:SetNWBool( "Ironsights" , true )
+        MsgN("Ironsights are false, setting to true")
+        self:SetNWBool("Ironsights", true)
     end
 
-    if ( self:GetOwner( ):IsPlayer( ) && ( self:GetOwner( ):KeyReleased( IN_ATTACK ) || !self:GetOwner( ):KeyDown( IN_ATTACK ) ) ) then
-        if ( self.BeatSound ) then
-            self.BeatSound:ChangeVolume( 1 , 0.1 )
+    if (self:GetOwner():IsPlayer() and (self:GetOwner():KeyReleased(IN_ATTACK) or not self:GetOwner():KeyDown(IN_ATTACK))) then
+        if (self.BeatSound) then
+            self.BeatSound:ChangeVolume(1, 0.1)
         end
 
-        if ( self.LoopSound ) then
-            self.LoopSound:Stop( )
+        if (self.LoopSound) then
+            self.LoopSound:Stop()
             self.LoopSound = nil
         end
     end
 
-    self:DrawWorldModel( )
+    self:DrawWorldModel()
 end
 
-function SWEP:RenderOverride( )
-    self:DrawWorldModel( )
+function SWEP:RenderOverride()
+    self:DrawWorldModel()
 end
 
-function SWEP:OnDrop( )
-    self:KillSounds( )
+function SWEP:OnDrop()
+    self:KillSounds()
     self.GetOwner = nil
 
-    if SERVER && IsValid( self.currentOwner ) then
-        self.currentOwner:StopSound( "meme.mp3" )
+    if SERVER and IsValid(self.currentOwner) then
+        self.currentOwner:StopSound("meme.mp3")
     end
 end
 
-function SWEP:DrawWorldModel( )
-    local hand , offset
+function SWEP:DrawWorldModel()
+    local hand, offset
 
-    if !IsValid( self:GetOwner( ) ) then
-        self:SetRenderOrigin( self.Pos )
-        self:SetRenderAngles( self.Ang )
-        self:DrawModel( )
+    if not IsValid(self:GetOwner()) then
+        self:SetRenderOrigin(self.Pos)
+        self:SetRenderAngles(self.Ang)
+        self:DrawModel()
 
         return
     end
 
-    if !self.Hand then
-        self.Hand = self:GetOwner( ):LookupAttachment( "anim_attachment_rh" )
+    if not self.Hand then
+        self.Hand = self:GetOwner():LookupAttachment("anim_attachment_rh")
     end
 
-    hand = self:GetOwner( ):GetAttachment( self.Hand )
+    hand = self:GetOwner():GetAttachment(self.Hand)
 
-    if !hand then
-        self:SetRenderOrigin( self.Pos )
-        self:SetRenderAngles( self.Ang )
-        self:DrawModel( )
+    if not hand then
+        self:SetRenderOrigin(self.Pos)
+        self:SetRenderAngles(self.Ang)
+        self:DrawModel()
 
         return
     end
 
-    offset = hand.Ang:Right( ) * self.Offset.Pos.Right + hand.Ang:Forward( ) * self.Offset.Pos.Forward + hand.Ang:Up( ) * self.Offset.Pos.Up
-    hand.Ang:RotateAroundAxis( hand.Ang:Right( ) , self.Offset.Ang.Right )
-    hand.Ang:RotateAroundAxis( hand.Ang:Forward( ) , self.Offset.Ang.Forward )
-    hand.Ang:RotateAroundAxis( hand.Ang:Up( ) , self.Offset.Ang.Up )
-    if self.SetRenderOrigin == nil || self.SetRenderAngles == nil then return end
-    self:SetRenderOrigin( hand.Pos + offset )
-    self:SetRenderAngles( hand.Ang )
-    self:DrawModel( )
+    offset = hand.Ang:Right() * self.Offset.Pos.Right + hand.Ang:Forward() * self.Offset.Pos.Forward + hand.Ang:Up() * self.Offset.Pos.Up
+    hand.Ang:RotateAroundAxis(hand.Ang:Right(), self.Offset.Ang.Right)
+    hand.Ang:RotateAroundAxis(hand.Ang:Forward(), self.Offset.Ang.Forward)
+    hand.Ang:RotateAroundAxis(hand.Ang:Up(), self.Offset.Ang.Up)
+    if self.SetRenderOrigin == nil or self.SetRenderAngles == nil then return end
+    self:SetRenderOrigin(hand.Pos + offset)
+    self:SetRenderAngles(hand.Ang)
+    self:DrawModel()
 end
 
-function SWEP:Deploy( )
-    self:SendWeaponAnim( ACT_VM_DRAW )
-    self:SetNextPrimaryFire( CurTime( ) + self:SequenceDuration( ) )
-    if ( CLIENT ) then return true end
-    self.BeatSound = CreateSound( self:GetOwner( ) , Sound( "weapons/musicboxgun/songs/dullsounds/popstar_loop.wav" ) )
+function SWEP:Deploy()
+    self:SendWeaponAnim(ACT_VM_DRAW)
+    self:SetNextPrimaryFire(CurTime() + self:SequenceDuration())
+    if (CLIENT) then return true end
+    self.BeatSound = CreateSound(self:GetOwner(), Sound("weapons/musicboxgun/songs/dullsounds/popstar_loop.wav"))
 
-    if ( self.BeatSound ) then
-        self.BeatSound:Play( )
+    if (self.BeatSound) then
+        self.BeatSound:Play()
     end
 
     return true
 end
 
-function SWEP:Holster( )
-    self:KillSounds( )
+function SWEP:Holster()
+    self:KillSounds()
 
-    if SERVER && IsValid( self.currentOwner ) then
-        self.currentOwner:StopSound( "meme.mp3" )
+    if SERVER and IsValid(self.currentOwner) then
+        self.currentOwner:StopSound("meme.mp3")
     end
 
     return true
@@ -287,15 +287,15 @@ end
 
 local IRONSIGHT_TIME = 0.25
 
-function SWEP:GetViewModelPosition( pos , ang )
-    if ( !self.IronSightsPos ) then return pos , ang end
-    local bIron = self:GetNWBool( "Ironsights" )
+function SWEP:GetViewModelPosition(pos, ang)
+    if (not self.IronSightsPos) then return pos, ang end
+    local bIron = self:GetNWBool("Ironsights")
 
-    if ( bIron != self.bLastIron ) then
+    if (bIron ~= self.bLastIron) then
         self.bLastIron = bIron
-        self.fIronTime = CurTime( )
+        self.fIronTime = CurTime()
 
-        if ( bIron ) then
+        if (bIron) then
             self.SwayScale = 0.3
             self.BobScale = 0.1
         else
@@ -304,33 +304,33 @@ function SWEP:GetViewModelPosition( pos , ang )
         end
     end
 
-    local fIronTime = self.fIronTime || 0
-    if ( !bIron && fIronTime < CurTime( ) - IRONSIGHT_TIME ) then return pos , ang end
+    local fIronTime = self.fIronTime or 0
+    if (not bIron and fIronTime < CurTime() - IRONSIGHT_TIME) then return pos, ang end
     local Mul = 1.0
 
-    if ( fIronTime > CurTime( ) - IRONSIGHT_TIME ) then
-        Mul = math.Clamp( ( CurTime( ) - fIronTime ) / IRONSIGHT_TIME , 0 , 1 )
+    if (fIronTime > CurTime() - IRONSIGHT_TIME) then
+        Mul = math.Clamp((CurTime() - fIronTime) / IRONSIGHT_TIME, 0, 1)
 
-        if ( !bIron ) then
+        if (not bIron) then
             Mul = 1 - Mul
         end
     end
 
     local Offset = self.IronSightsPos
 
-    if ( self.IronSightsAng ) then
+    if (self.IronSightsAng) then
         ang = ang * 1
-        ang:RotateAroundAxis( ang:Right( ) , self.IronSightsAng.x * Mul )
-        ang:RotateAroundAxis( ang:Up( ) , self.IronSightsAng.y * Mul )
-        ang:RotateAroundAxis( ang:Forward( ) , self.IronSightsAng.z * Mul )
+        ang:RotateAroundAxis(ang:Right(), self.IronSightsAng.x * Mul)
+        ang:RotateAroundAxis(ang:Up(), self.IronSightsAng.y * Mul)
+        ang:RotateAroundAxis(ang:Forward(), self.IronSightsAng.z * Mul)
     end
 
-    local Right = ang:Right( )
-    local Up = ang:Up( )
-    local Forward = ang:Forward( )
+    local Right = ang:Right()
+    local Up = ang:Up()
+    local Forward = ang:Forward()
     pos = pos + Offset.x * Right * Mul
     pos = pos + Offset.y * Forward * Mul
     pos = pos + Offset.z * Up * Mul
 
-    return pos , ang
+    return pos, ang
 end
