@@ -13,7 +13,7 @@ if (SERVER) then
     resource.AddFile("models/mark2580/sr4/dubstepgun.sw.vtx")
     resource.AddFile("models/mark2580/sr4/dubstepgun.vvd")
     resource.AddFile("materials/models/mark2580/sr4/dubstepgun_lg_d.vmt")
-    resource.AddFile("meme.mp3")
+    resource.AddFile("sound/meme.mp3")
     local song_files = file.Find("sound/" .. song_path .. "*.wav", "GAME")
 
     if song_files then
@@ -143,7 +143,7 @@ end
 function SWEP:SecondaryAttack()
     if SERVER then
         self.currentOwner = self:GetOwner()
-        self:GetOwner():EmitSound("meme.mp3")
+        self.currentOwner:EmitSound("meme.mp3")
     end
 
     self:SetNextSecondaryFire(CurTime() + 3)
