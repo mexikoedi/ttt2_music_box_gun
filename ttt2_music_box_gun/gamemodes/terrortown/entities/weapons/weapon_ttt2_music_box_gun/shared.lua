@@ -1,4 +1,3 @@
-if engine.ActiveGamemode() ~= "terrortown" then return end
 local songs = {}
 local song_path = "weapons/musicboxgun/songs/"
 
