@@ -4,7 +4,7 @@ local song_path = "weapons/musicboxgun/songs/"
 if (SERVER) then
     AddCSLuaFile()
     resource.AddFile("materials/effects/mbg/refract_ring.vmt")
-    resource.AddFile("materials/icon/weapon_music_box_gun.vmt")
+    resource.AddFile("materials/vgui/weapon_music_box_gun.vmt")
     resource.AddFile("models/mark2580/sr4/dubstepgun.dx80.vtx")
     resource.AddFile("models/mark2580/sr4/dubstepgun.dex90.vtx")
     resource.AddFile("models/mark2580/sr4/dubstepgun.mdl")
@@ -35,7 +35,7 @@ SWEP.Kind = WEAPON_EQUIP1
 SWEP.CanBuy = {ROLE_DETECTIVE}
 
 SWEP.LimitedStock = true
-SWEP.Icon = "icon/weapon_music_box_gun"
+SWEP.Icon = "vgui/weapon_music_box_gun"
 SWEP.Base = "weapon_tttbase"
 SWEP.PrintName = "Music Box Gun"
 SWEP.AutoSpawnable = false
