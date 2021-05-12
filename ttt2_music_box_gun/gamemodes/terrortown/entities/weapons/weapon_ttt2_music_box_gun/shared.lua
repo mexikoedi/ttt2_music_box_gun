@@ -12,7 +12,7 @@ if (SERVER) then
     resource.AddFile("models/mark2580/sr4/dubstepgun.sw.vtx")
     resource.AddFile("models/mark2580/sr4/dubstepgun.vvd")
     resource.AddFile("materials/models/mark2580/sr4/dubstepgun_lg_d.vmt")
-    resource.AddFile("sound/meme.mp3")
+    resource.AddFile("sound/meme.wav")
     local song_files = file.Find("sound/" .. song_path .. "*.wav", "GAME")
 
     if song_files then
@@ -81,15 +81,10 @@ SWEP.Offset = {
 function SWEP:Initialize()
     if CLIENT then
         self:AddHUDHelp("ttt2_music_box_gun_help1", "ttt2_music_box_gun_help2", true)
-    end
-
-    self:SetWeaponHoldType(self.HoldType)
-
-    if SERVER then
         self:SetWeaponHoldType(self.HoldType)
     end
 
-    if CLIENT then
+    if SERVER then
         self:SetWeaponHoldType(self.HoldType)
     end
 
@@ -142,7 +137,7 @@ end
 function SWEP:SecondaryAttack()
     if SERVER then
         self.currentOwner = self:GetOwner()
-        self.currentOwner:EmitSound("meme.mp3")
+        self.currentOwner:EmitSound("meme.wav")
     end
 
     self:SetNextSecondaryFire(CurTime() + 3)
@@ -180,7 +175,7 @@ function SWEP:OnRemove()
     self:KillSounds()
 
     if SERVER and IsValid(self.currentOwner) then
-        self.currentOwner:StopSound("meme.mp3")
+        self.currentOwner:StopSound("meme.wav")
     end
 end
 
@@ -222,7 +217,7 @@ function SWEP:OnDrop()
     self.GetOwner = nil
 
     if SERVER and IsValid(self.currentOwner) then
-        self.currentOwner:StopSound("meme.mp3")
+        self.currentOwner:StopSound("meme.wav")
     end
 end
 
@@ -278,7 +273,7 @@ function SWEP:Holster()
     self:KillSounds()
 
     if SERVER and IsValid(self.currentOwner) then
-        self.currentOwner:StopSound("meme.mp3")
+        self.currentOwner:StopSound("meme.wav")
     end
 
     return true
