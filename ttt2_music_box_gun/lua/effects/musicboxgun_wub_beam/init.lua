@@ -1,4 +1,5 @@
 if engine.ActiveGamemode() ~= "terrortown" then return end
+AddCSLuaFile()
 EFFECT.Mat = Material("trails/laser")
 EFFECT.Mat2 = Material("trails/plasma")
 
