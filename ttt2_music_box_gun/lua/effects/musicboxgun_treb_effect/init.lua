@@ -1,4 +1,5 @@
 if engine.ActiveGamemode() ~= "terrortown" then return end
+AddCSLuaFile()
 
 function EFFECT:Init(data)
     self.Position = data:GetOrigin()
