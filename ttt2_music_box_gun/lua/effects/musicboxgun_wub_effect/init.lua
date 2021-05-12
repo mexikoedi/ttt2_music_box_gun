@@ -1,4 +1,5 @@
 if engine.ActiveGamemode() ~= "terrortown" then return end
+AddCSLuaFile()
 local matBulge2 = Material("effects/mbg/refract_ring")
 local matBulge = Material("Effects/freeze_unfreeze")
 local matBulge3 = Material("particle/warp_ripple")
