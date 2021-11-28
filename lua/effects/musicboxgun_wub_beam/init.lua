@@ -4,7 +4,7 @@ EFFECT.Mat = Material("trails/laser")
 EFFECT.Mat2 = Material("trails/plasma")
 
 function EFFECT:Init(data)
-    self.Position = data:GetStart()
+    self.Position = data:GetEntity():GetPos()
     self.WeaponEnt = data:GetEntity()
     if not IsValid(self.WeaponEnt) then return end
     if not IsValid(self.WeaponEnt:GetOwner()) then return end
