@@ -22,7 +22,7 @@ function EFFECT:Init(data)
             local vPos = self.Position + Vector(math.random(Low.x, High.x), math.random(Low.y, High.y), math.random(Low.z, High.z))
             local particle = emitter:Add("/effects/laser_tracer", vPos + Vector(0, 0, 15))
 
-            if (particle) then
+            if particle then
                 particle:SetColor(120, 80, 220, 128)
                 particle:SetVelocity(Vector(0, 0, -1))
                 particle:SetLifeTime(0)
@@ -42,7 +42,7 @@ function EFFECT:Init(data)
 
             local particles = emitter:Add("/effects/laser_tracer", vPos + Vector(0, 0, 10))
 
-            if (particles) then
+            if particles then
                 particles:SetColor(60, 20, 220, 128)
                 particles:SetVelocity(Vector(0, 0, -1))
                 particles:SetLifeTime(0)
@@ -62,7 +62,7 @@ function EFFECT:Init(data)
 
             local particle2 = emitter:Add("/effects/laser_tracer", vPos)
 
-            if (particle2) then
+            if particle2 then
                 particle2:SetColor(60, 0, 160, 128)
                 particle2:SetVelocity(Vector(0, 0, -1))
                 particle2:SetLifeTime(0)
@@ -82,7 +82,7 @@ function EFFECT:Init(data)
 
             local particle3 = emitter:Add("/effects/laser_tracer", vPos + Vector(0, 0, 0))
 
-            if (particle3) then
+            if particle3 then
                 particle3:SetColor(220, 20, 60, 128)
                 particle3:SetVelocity(Vector(0, 0, -1))
                 particle3:SetLifeTime(0)

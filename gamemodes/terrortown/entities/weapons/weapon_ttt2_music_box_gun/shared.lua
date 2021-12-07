@@ -1,7 +1,7 @@
 local songs = {}
 local song_path = "weapons/musicboxgun/songs/"
 
-if (SERVER) then
+if SERVER then
     AddCSLuaFile()
     resource.AddFile("materials/effects/mbg/refract_ring.vmt")
     resource.AddFile("materials/vgui/weapon_music_box_gun.vmt")
@@ -37,8 +37,17 @@ SWEP.CanBuy = {ROLE_DETECTIVE}
 SWEP.LimitedStock = true
 SWEP.Icon = "vgui/weapon_music_box_gun"
 SWEP.Base = "weapon_tttbase"
+SWEP.Author = "mexikoedi"
 SWEP.PrintName = "Music Box Gun"
+SWEP.Contact = "Steam"
+SWEP.Instructions = "Left click to shoot beams with random sounds and secondary attack to play a sound."
+SWEP.Purpose = "Kill your enemies with music and colorful lights."
 SWEP.AutoSpawnable = false
+SWEP.Spawnable = false
+SWEP.AdminOnly = false
+SWEP.AdminSpawnable = false
+SWEP.AllowDrop = true
+SWEP.AllowPickup = true
 SWEP.ViewModel = "models/mark2580/sr4/dubstepgun.mdl"
 SWEP.WorldModel = "models/mark2580/sr4/dubstepgun.mdl"
 SWEP.ShowWorldModel = true
@@ -92,17 +101,17 @@ function SWEP:Initialize()
 end
 
 function SWEP:PrimaryAttack()
-    if (not self:CanPrimaryAttack()) then return end
+    if not self:CanPrimaryAttack() then return end
 
-    if SERVER and not self.LoopSound then
+    if SERVER and GetConVar("ttt2_music_box_gun_primary_sound"):GetBool() and not self.LoopSound then
         self.LoopSound = CreateSound(self:GetOwner(), Sound(song_path .. songs[math.random(#songs)]))
 
-        if (self.LoopSound) then
+        if self.LoopSound then
             self.LoopSound:Play()
         end
     end
 
-    if (self.BeatSound) then
+    if self.BeatSound then
         self.BeatSound:ChangeVolume(0, 0.1)
     end
 
@@ -128,14 +137,15 @@ function SWEP:PrimaryAttack()
     effectdata:SetScale(5)
     effectdata:SetAttachment(1)
     effectdata:SetEntity(self)
+    local dmg = GetConVar("ttt2_music_box_gun_damage"):GetInt() / 2
     util.Effect("musicboxgun_wub_beam", effectdata, true, true)
-    util.BlastDamage(self, self:GetOwner(), tr.HitPos, 175, 10)
+    util.BlastDamage(self, self:GetOwner(), tr.HitPos, 175, dmg)
     self:SetNextPrimaryFire(CurTime() + self.Primary.Delay)
     self:SetNextSecondaryFire(CurTime() + self.Primary.Delay)
 end
 
 function SWEP:SecondaryAttack()
-    if SERVER then
+    if SERVER and GetConVar("ttt2_music_box_gun_secondary_sound"):GetBool() then
         self.currentOwner = self:GetOwner()
         self.currentOwner:EmitSound("meme.wav")
     end
@@ -160,12 +170,12 @@ function SWEP:FireAnimationEvent(pos, ang, event)
 end
 
 function SWEP:KillSounds()
-    if (self.BeatSound) then
+    if self.BeatSound then
         self.BeatSound:Stop()
         self.BeatSound = nil
     end
 
-    if (self.LoopSound) then
+    if self.LoopSound then
         self.LoopSound:Stop()
         self.LoopSound = nil
     end
@@ -194,12 +204,12 @@ function SWEP:Think()
         self:SetNWBool("Ironsights", true)
     end
 
-    if (self:GetOwner():IsPlayer() and (self:GetOwner():KeyReleased(IN_ATTACK) or not self:GetOwner():KeyDown(IN_ATTACK))) then
-        if (self.BeatSound) then
+    if self:GetOwner():IsPlayer() and (self:GetOwner():KeyReleased(IN_ATTACK) or not self:GetOwner():KeyDown(IN_ATTACK)) then
+        if self.BeatSound then
             self.BeatSound:ChangeVolume(1, 0.1)
         end
 
-        if (self.LoopSound) then
+        if self.LoopSound then
             self.LoopSound:Stop()
             self.LoopSound = nil
         end
@@ -259,10 +269,13 @@ end
 function SWEP:Deploy()
     self:SendWeaponAnim(ACT_VM_DRAW)
     self:SetNextPrimaryFire(CurTime() + self:SequenceDuration())
-    if (CLIENT) then return true end
-    self.BeatSound = CreateSound(self:GetOwner(), Sound("weapons/musicboxgun/songs/dullsounds/popstar_loop.wav"))
+    if CLIENT then return true end
 
-    if (self.BeatSound) then
+    if GetConVar("ttt2_music_box_gun_standby_sound"):GetBool() then
+        self.BeatSound = CreateSound(self:GetOwner(), Sound("weapons/musicboxgun/songs/dullsounds/popstar_loop.wav"))
+    end
+
+    if self.BeatSound then
         self.BeatSound:Play()
     end
 
@@ -282,10 +295,10 @@ end
 local IRONSIGHT_TIME = 0.25
 
 function SWEP:GetViewModelPosition(pos, ang)
-    if (not self.IronSightsPos) then return pos, ang end
+    if not self.IronSightsPos then return pos, ang end
     local bIron = self:GetNWBool("Ironsights")
 
-    if (bIron ~= self.bLastIron) then
+    if bIron ~= self.bLastIron then
         self.bLastIron = bIron
         self.fIronTime = CurTime()
 
@@ -299,20 +312,20 @@ function SWEP:GetViewModelPosition(pos, ang)
     end
 
     local fIronTime = self.fIronTime or 0
-    if (not bIron and fIronTime < CurTime() - IRONSIGHT_TIME) then return pos, ang end
+    if not bIron and fIronTime < CurTime() - IRONSIGHT_TIME then return pos, ang end
     local Mul = 1.0
 
-    if (fIronTime > CurTime() - IRONSIGHT_TIME) then
+    if fIronTime > CurTime() - IRONSIGHT_TIME then
         Mul = math.Clamp((CurTime() - fIronTime) / IRONSIGHT_TIME, 0, 1)
 
-        if (not bIron) then
+        if not bIron then
             Mul = 1 - Mul
         end
     end
 
     local Offset = self.IronSightsPos
 
-    if (self.IronSightsAng) then
+    if self.IronSightsAng then
         ang = ang * 1
         ang:RotateAroundAxis(ang:Right(), self.IronSightsAng.x * Mul)
         ang:RotateAroundAxis(ang:Up(), self.IronSightsAng.y * Mul)
