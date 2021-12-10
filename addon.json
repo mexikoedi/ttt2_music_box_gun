@@ -1,7 +1,10 @@
 {
-    "title": "TTT2 Music Box Gun",
+    "title": "[TTT2] Music Box Gun [WEAPON]",
     "type": "weapon",
-    "tags": "fun",
+    "tags": [
+        "realism",
+        "fun"
+    ],
     "description": "It's a party in a gun! Make the world dance to your beat!",
     "ignore": [
         "*.psd",

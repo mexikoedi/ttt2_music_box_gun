@@ -1,6 +1,6 @@
-# TTT2_Music_Box_Gun
+# ttt2_music_box_gun
 
-TTT2_Music_Box_Gun Addon for Garry's Mod.
+ttt2_music_box_gun addon for Garry's Mod.
 
 More information are available here: 
 https://steamcommunity.com/sharedfiles/filedetails/?id=2065361921
