@@ -1,4 +1,4 @@
-L = LANG.GetLanguageTableReference("de")
+local L = LANG.GetLanguageTableReference("de")
 L["ttt2_music_box_gun_name"] = "Musik Box Waffe"
 L["ttt2_music_box_gun_desc"] = "Es ist eine Party in einer Waffe! Lassen Sie die Welt zu Ihrem Takt tanzen!"
 L["ttt2_music_box_gun_help1"] = "{primaryfire} Musizieren."
