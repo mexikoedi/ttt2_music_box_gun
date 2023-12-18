@@ -4,6 +4,8 @@ EFFECT.Mat = Material("trails/laser")
 EFFECT.Mat2 = Material("trails/plasma")
 
 function EFFECT:Init(data)
+    local entity = data:GetEntity()
+    if not IsValid(entity) then return end
     self.Position = data:GetEntity():GetPos()
     self.WeaponEnt = data:GetEntity()
     if not IsValid(self.WeaponEnt) then return end

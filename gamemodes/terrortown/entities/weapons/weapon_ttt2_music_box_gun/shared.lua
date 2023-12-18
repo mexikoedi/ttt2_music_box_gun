@@ -200,7 +200,6 @@ function SWEP:Think()
     ironSightStatus = self:GetNWBool("Ironsights", false)
 
     if ironSightStatus == false then
-        MsgN("Ironsights are false, setting to true")
         self:SetNWBool("Ironsights", true)
     end
 
