@@ -4,24 +4,20 @@ local matBulge2 = Material("effects/mbg/refract_ring")
 local matBulge = Material("Effects/freeze_unfreeze")
 local matBulge3 = Material("particle/warp_ripple")
 local lighteffect = CreateClientConVar("cl_musicboxgun_wub_light", "0", true, false)
-
 function EFFECT:Init(data)
     self.Position = data:GetOrigin()
     self.Normal = data:GetNormal()
     self.Ent = data:GetEntity()
     self.KillTime = CurTime() + 0.65
     self:SetRenderBoundsWS(self.Position + Vector() * 280, self.Position - Vector() * 280)
-
     timer.Simple(0.1, function()
         if self.Normal == nil then return end
         local emitter = ParticleEmitter(self.Position)
         local size = 270
         local Low, High = Vector(-size, -size, -size), Vector(size, size, size * 2)
-
         for i = 1, 25 do
             local vPos = self.Position + Vector(math.random(Low.x, High.x), math.random(Low.y, High.y), math.random(Low.z, High.z))
             local particle = emitter:Add("/effects/laser_tracer", vPos + Vector(0, 0, 15))
-
             if particle then
                 particle:SetColor(120, 80, 220, 128)
                 particle:SetVelocity(Vector(0, 0, -1))
@@ -41,7 +37,6 @@ function EFFECT:Init(data)
             end
 
             local particles = emitter:Add("/effects/laser_tracer", vPos + Vector(0, 0, 10))
-
             if particles then
                 particles:SetColor(60, 20, 220, 128)
                 particles:SetVelocity(Vector(0, 0, -1))
@@ -61,7 +56,6 @@ function EFFECT:Init(data)
             end
 
             local particle2 = emitter:Add("/effects/laser_tracer", vPos)
-
             if particle2 then
                 particle2:SetColor(60, 0, 160, 128)
                 particle2:SetVelocity(Vector(0, 0, -1))
@@ -81,7 +75,6 @@ function EFFECT:Init(data)
             end
 
             local particle3 = emitter:Add("/effects/laser_tracer", vPos + Vector(0, 0, 0))
-
             if particle3 then
                 particle3:SetColor(220, 20, 60, 128)
                 particle3:SetVelocity(Vector(0, 0, -1))
@@ -102,7 +95,6 @@ function EFFECT:Init(data)
         end
 
         emitter:Finish()
-
         if lighteffect:GetInt() == 1 then
             local dlight = DynamicLight(math.random(2048, 4096))
             dlight.Pos = self.Position
@@ -119,7 +111,6 @@ end
 
 function EFFECT:Think()
     if CurTime() > self.KillTime then return false end
-
     return true
 end
 

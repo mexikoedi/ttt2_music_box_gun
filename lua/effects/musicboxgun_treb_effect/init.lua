@@ -1,6 +1,5 @@
 if engine.ActiveGamemode() ~= "terrortown" then return end
 AddCSLuaFile()
-
 function EFFECT:Init(data)
     self.Position = data:GetOrigin()
     self.WeaponEntity = data:GetEntity()
@@ -11,7 +10,6 @@ function EFFECT:Init(data)
     self:SetRenderBoundsWS(self.Position + Vector() * 280, self.Position - Vector() * 280)
     if self.Normal == nil then return end
     local emitter = ParticleEmitter(self.Position)
-
     for i = 1, 30 do
         local vec = (self.Normal + 5 * VectorRand()):GetNormalized()
         local particle = emitter:Add("sprites/glow04_noz", self.Position + math.Rand(3, 30) * vec)
@@ -36,7 +34,6 @@ end
 function EFFECT:Think()
     if not IsValid(self.WeaponEntity) then return false end
     if CurTime() > self.KillTime then return false end
-
     return true
 end
 
