@@ -271,3 +271,31 @@ function SWEP:GetViewModelPosition(pos, ang)
     pos = pos + Offset.z * Up * Mul
     return pos, ang
 end
+
+if CLIENT then
+    function SWEP:AddToSettingsMenu(parent)
+        local form = vgui.CreateTTT2Form(parent, "header_equipment_additional")
+        form:MakeCheckBox({
+            serverConvar = "ttt2_music_box_gun_primary_sound",
+            label = "label_music_box_gun_primary_sound"
+        })
+
+        form:MakeCheckBox({
+            serverConvar = "ttt2_music_box_gun_secondary_sound",
+            label = "label_music_box_gun_secondary_sound"
+        })
+
+        form:MakeCheckBox({
+            serverConvar = "ttt2_music_box_gun_standby_sound",
+            label = "label_music_box_gun_standby_sound"
+        })
+
+        form:MakeSlider({
+            serverConvar = "ttt2_music_box_gun_damage",
+            label = "label_music_box_gun_damage",
+            min = 0,
+            max = 200,
+            decimal = 0
+        })
+    end
+end
