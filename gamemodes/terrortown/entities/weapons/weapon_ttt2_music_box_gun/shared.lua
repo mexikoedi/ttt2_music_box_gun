@@ -79,7 +79,7 @@ SWEP.Offset = {
 
 function SWEP:Initialize()
     if CLIENT then
-        self:AddHUDHelp("ttt2_music_box_gun_help1", "ttt2_music_box_gun_help2", true)
+        self:AddTTT2HUDHelp("ttt2_music_box_gun_help1", "ttt2_music_box_gun_help2")
         self:SetWeaponHoldType(self.HoldType)
     end
 

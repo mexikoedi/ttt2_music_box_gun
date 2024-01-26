@@ -1,8 +1,8 @@
 local L = LANG.GetLanguageTableReference("de")
 L["ttt2_music_box_gun_name"] = "Musik Box Waffe"
 L["ttt2_music_box_gun_desc"] = "Es ist eine Party in einer Waffe! Lassen Sie die Welt zu Ihrem Takt tanzen!"
-L["ttt2_music_box_gun_help1"] = "{primaryfire} Musizieren."
-L["ttt2_music_box_gun_help2"] = "{secondaryfire} Spielen Sie 3 Sekunden eines legendären Meme-Sounds."
+L["ttt2_music_box_gun_help1"] = "Musizieren"
+L["ttt2_music_box_gun_help2"] = "Spielen Sie 3 Sekunden einen legendären Meme-Sound"
 L["label_music_box_gun_primary_sound"] = "Aktiviere primäres Angriffsgeräusch"
 L["label_music_box_gun_secondary_sound"] = "Aktiviere sekundäres Angriffsgeräusch"
 L["label_music_box_gun_standby_sound"] = "Aktiviere Standbygeräusch"

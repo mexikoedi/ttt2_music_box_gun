@@ -1,8 +1,8 @@
 local L = LANG.GetLanguageTableReference("ru")
 L["ttt2_music_box_gun_name"] = "Музыкальная шкатулка"
 L["ttt2_music_box_gun_desc"] = "Это вечеринка в оружии! Заставь мир танцевать в своём ритме!"
-L["ttt2_music_box_gun_help1"] = "{primaryfire} Создать музыку."
-L["ttt2_music_box_gun_help2"] = "{secondaryfire} Воспроизвести 3 секунды легендарного мемного звука."
+L["ttt2_music_box_gun_help1"] = "Создать музыку"
+L["ttt2_music_box_gun_help2"] = "Воспроизвести 3 секунды легендарного мемного звука"
 L["label_music_box_gun_primary_sound"] = "Включить звук основной атаки"
 L["label_music_box_gun_secondary_sound"] = "Включить вторичный звук атаки"
 L["label_music_box_gun_standby_sound"] = "Включить звук в режиме ожидания"
