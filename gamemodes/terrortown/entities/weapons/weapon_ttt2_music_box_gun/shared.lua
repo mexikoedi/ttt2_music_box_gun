@@ -58,7 +58,7 @@ SWEP.Primary.DefaultClip = 1
 SWEP.Primary.Automatic = true
 SWEP.Primary.Ammo = "none"
 SWEP.Secondary.ClipSize = 1
-SWEP.Secondary.Delay = 0.5
+SWEP.Secondary.Delay = 3
 SWEP.Secondary.DefaultClip = 1
 SWEP.Secondary.Automatic = false
 SWEP.Secondary.Ammo = "none"
@@ -114,7 +114,6 @@ function SWEP:PrimaryAttack()
     util.Effect("musicboxgun_wub_beam", effectdata, true, true)
     util.BlastDamage(self, self:GetOwner(), tr.HitPos, 175, dmg)
     self:SetNextPrimaryFire(CurTime() + self.Primary.Delay)
-    self:SetNextSecondaryFire(CurTime() + self.Primary.Delay)
 end
 
 function SWEP:SecondaryAttack()
@@ -123,7 +122,7 @@ function SWEP:SecondaryAttack()
         self.currentOwner:EmitSound("meme.wav")
     end
 
-    self:SetNextSecondaryFire(CurTime() + 3)
+    self:SetNextSecondaryFire(CurTime() + self.Secondary.Delay)
 end
 
 function SWEP:Reload()
