@@ -52,8 +52,10 @@ SWEP.PreventEffectSpam = false
 SWEP.AllowBounce = false
 SWEP.SkinType = 1
 SWEP.ViewModelFlip = false
+SWEP.Primary.Damage = GetConVar("ttt2_music_box_gun_damage"):GetInt()
 SWEP.Primary.ClipSize = 1
 SWEP.Primary.Delay = 0.1
+SWEP.Primary.Radius = GetConVar("ttt2_music_box_gun_radius"):GetInt()
 SWEP.Primary.DefaultClip = 1
 SWEP.Primary.Automatic = true
 SWEP.Primary.Ammo = "none"
@@ -89,8 +91,10 @@ end
 
 function SWEP:PrimaryAttack()
     if not self:CanPrimaryAttack() then return end
+    local owner = self:GetOwner()
+    if not IsValid(owner) then return end
     if SERVER and GetConVar("ttt2_music_box_gun_primary_sound"):GetBool() and not self.LoopSound then
-        self.LoopSound = CreateSound(self:GetOwner(), Sound(song_path .. songs[math.random(#songs)]))
+        self.LoopSound = CreateSound(owner, Sound(song_path .. songs[math.random(#songs)]))
         if self.LoopSound then self.LoopSound:Play() end
     end
 
@@ -100,26 +104,26 @@ function SWEP:PrimaryAttack()
     self.AllowBounce = true
     timer.Simple(0.3, function() self.PreventEffectSpam = false end)
     timer.Simple(0.45, function() self.AllowBounce = false end)
-    local tr = self:GetOwner():GetEyeTrace()
+    local tr = owner:GetEyeTrace()
     local effectdata = EffectData()
     effectdata:SetOrigin(tr.HitPos)
     util.Effect("musicboxgun_wub_effect", effectdata, true, true)
     util.Effect("musicboxgun_treb_effect", effectdata, true, true)
     effectdata:SetOrigin(tr.HitPos)
-    effectdata:SetStart(self:GetOwner():GetShootPos())
+    effectdata:SetStart(owner:GetShootPos())
     effectdata:SetScale(5)
     effectdata:SetAttachment(1)
     effectdata:SetEntity(self)
-    local dmg = GetConVar("ttt2_music_box_gun_damage"):GetInt() / 2
+    local dmg = self.Primary.Damage / 2
     util.Effect("musicboxgun_wub_beam", effectdata, true, true)
-    util.BlastDamage(self, self:GetOwner(), tr.HitPos, 175, dmg)
+    util.BlastDamage(self, owner, tr.HitPos, self.Primary.Radius, dmg)
     self:SetNextPrimaryFire(CurTime() + self.Primary.Delay)
 end
 
 function SWEP:SecondaryAttack()
     if SERVER and GetConVar("ttt2_music_box_gun_secondary_sound"):GetBool() then
         self.currentOwner = self:GetOwner()
-        self.currentOwner:EmitSound("meme.wav")
+        if IsValid(self.currentOwner) then self.currentOwner:EmitSound("meme.wav") end
     end
 
     self:SetNextSecondaryFire(CurTime() + self.Secondary.Delay)
@@ -164,9 +168,10 @@ function SWEP:CalcAbsolutePosition(pos, ang)
 end
 
 function SWEP:Think()
+    local owner = self:GetOwner()
     ironSightStatus = self:GetNWBool("Ironsights", false)
     if ironSightStatus == false then self:SetNWBool("Ironsights", true) end
-    if self:GetOwner():IsPlayer() and (self:GetOwner():KeyReleased(IN_ATTACK) or not self:GetOwner():KeyDown(IN_ATTACK)) then
+    if owner:IsPlayer() and (owner:KeyReleased(IN_ATTACK) or not owner:KeyDown(IN_ATTACK)) then
         if self.BeatSound then self.BeatSound:ChangeVolume(1, 0.1) end
         if self.LoopSound then
             self.LoopSound:Stop()
@@ -189,15 +194,16 @@ end
 
 function SWEP:DrawWorldModel()
     local hand, offset
-    if not IsValid(self:GetOwner()) then
+    local owner = self:GetOwner()
+    if not IsValid(owner) then
         self:SetRenderOrigin(self.Pos)
         self:SetRenderAngles(self.Ang)
         self:DrawModel()
         return
     end
 
-    if not self.Hand then self.Hand = self:GetOwner():LookupAttachment("anim_attachment_rh") end
-    hand = self:GetOwner():GetAttachment(self.Hand)
+    if not self.Hand then self.Hand = owner:LookupAttachment("anim_attachment_rh") end
+    hand = owner:GetAttachment(self.Hand)
     if not hand then
         self:SetRenderOrigin(self.Pos)
         self:SetRenderAngles(self.Ang)
@@ -219,7 +225,11 @@ function SWEP:Deploy()
     self:SendWeaponAnim(ACT_VM_DRAW)
     self:SetNextPrimaryFire(CurTime() + self:SequenceDuration())
     if CLIENT then return true end
-    if GetConVar("ttt2_music_box_gun_standby_sound"):GetBool() then self.BeatSound = CreateSound(self:GetOwner(), Sound("weapons/musicboxgun/songs/dullsounds/popstar_loop.wav")) end
+    if GetConVar("ttt2_music_box_gun_standby_sound"):GetBool() then
+        local owner = self:GetOwner()
+        self.BeatSound = CreateSound(owner, Sound("weapons/musicboxgun/songs/dullsounds/popstar_loop.wav"))
+    end
+
     if self.BeatSound then self.BeatSound:Play() end
     return true
 end
@@ -294,6 +304,14 @@ if CLIENT then
             label = "label_music_box_gun_damage",
             min = 0,
             max = 200,
+            decimal = 0
+        })
+
+        form:MakeSlider({
+            serverConvar = "ttt2_music_box_gun_radius",
+            label = "label_music_box_gun_radius",
+            min = 0,
+            max = 500,
             decimal = 0
         })
     end

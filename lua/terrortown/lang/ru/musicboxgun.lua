@@ -7,3 +7,4 @@ L["label_music_box_gun_primary_sound"] = "Включить звук основн
 L["label_music_box_gun_secondary_sound"] = "Включить вторичный звук атаки"
 L["label_music_box_gun_standby_sound"] = "Включить звук в режиме ожидания"
 L["label_music_box_gun_damage"] = "Ущерб, который необходимо нанести"
+L["label_music_box_gun_radius"] = "Радиус, в котором наносится урон по области"
