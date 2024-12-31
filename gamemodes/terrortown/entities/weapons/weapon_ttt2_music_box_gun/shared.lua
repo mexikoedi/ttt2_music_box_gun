@@ -133,14 +133,14 @@ function SWEP:Reload()
     return false
 end
 
-function SWEP:DoImpactEffect(trace, damageType)
+function SWEP:DoImpactEffect(trace)
     local effectdata = EffectData()
     effectdata:SetStart(trace.HitPos)
     effectdata:SetOrigin(trace.HitNormal + Vector(math.Rand(-0.5, 0.5), math.Rand(-0.5, 0.5), math.Rand(-0.5, 0.5)))
     return true
 end
 
-function SWEP:FireAnimationEvent(pos, ang, event)
+function SWEP:FireAnimationEvent()
     return true
 end
 

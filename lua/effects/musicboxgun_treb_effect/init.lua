@@ -10,7 +10,7 @@ function EFFECT:Init(data)
     self:SetRenderBoundsWS(self.Position + Vector() * 280, self.Position - Vector() * 280)
     if self.Normal == nil then return end
     local emitter = ParticleEmitter(self.Position)
-    for i = 1, 30 do
+    for _ = 1, 30 do
         local vec = (self.Normal + 5 * VectorRand()):GetNormalized()
         local particle = emitter:Add("sprites/glow04_noz", self.Position + math.Rand(3, 30) * vec)
         particle:SetVelocity(math.Rand(70, 70) * vec)

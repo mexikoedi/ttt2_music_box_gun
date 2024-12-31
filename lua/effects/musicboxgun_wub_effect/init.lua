@@ -15,7 +15,7 @@ function EFFECT:Init(data)
         local emitter = ParticleEmitter(self.Position)
         local size = 270
         local Low, High = Vector(-size, -size, -size), Vector(size, size, size * 2)
-        for i = 1, 25 do
+        for _ = 1, 25 do
             local vPos = self.Position + Vector(math.random(Low.x, High.x), math.random(Low.y, High.y), math.random(Low.z, High.z))
             local particle = emitter:Add("/effects/laser_tracer", vPos + Vector(0, 0, 15))
             if particle then

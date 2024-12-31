@@ -37,12 +37,12 @@ function EFFECT:Render()
     local texcoord = math.Rand(0, 1)
     local width = 15
     render.SetMaterial(self.Mat2)
-    for i = 1, 6 do
+    for _ = 1, 6 do
         render.DrawBeam(self.StartPos, self.EndPos, width / 2, texcoord, texcoord + self.Length / 128, Color(col.r, col.g, col.b, self.Alpha))
     end
 
     render.SetMaterial(self.Mat)
-    for i = 1, 6 do
+    for _ = 1, 6 do
         render.DrawBeam(self.StartPos, self.EndPos, width, texcoord, texcoord + self.Length / 128, Color(col.r, col.g, col.b, self.Alpha))
     end
 end
