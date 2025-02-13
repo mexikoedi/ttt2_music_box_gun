@@ -93,13 +93,18 @@ function SWEP:PrimaryAttack()
     if not self:CanPrimaryAttack() then return end
     local owner = self:GetOwner()
     if not IsValid(owner) then return end
+    if SERVER then owner:LagCompensation(true) end
     if SERVER and GetConVar("ttt2_music_box_gun_primary_sound"):GetBool() and not self.LoopSound then
         self.LoopSound = CreateSound(owner, Sound(song_path .. songs[math.random(#songs)]))
         if self.LoopSound then self.LoopSound:Play() end
     end
 
     if self.BeatSound then self.BeatSound:ChangeVolume(0, 0.1) end
-    if self.PreventEffectSpam == true then return end
+    if self.PreventEffectSpam == true then
+        if SERVER then owner:LagCompensation(false) end
+        return
+    end
+
     self.PreventEffectSpam = true
     self.AllowBounce = true
     timer.Simple(0.3, function() self.PreventEffectSpam = false end)
@@ -118,6 +123,7 @@ function SWEP:PrimaryAttack()
     util.Effect("musicboxgun_wub_beam", effectdata, true, true)
     util.BlastDamage(self, owner, tr.HitPos, self.Primary.Radius, dmg)
     self:SetNextPrimaryFire(CurTime() + self.Primary.Delay)
+    if SERVER then owner:LagCompensation(false) end
 end
 
 function SWEP:SecondaryAttack()
